@@ -7,7 +7,7 @@
 
 [完善中](/article/jvm/jvm)
 
-![image-20201123230218949](image/logo/logo-1-30.png)
+![image-20201123230218949](images/logo/logo-1-30.png)
 
 # 未来可期
 ## JAVA
