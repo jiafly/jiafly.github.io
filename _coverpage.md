@@ -1,6 +1,6 @@
 <!-- 网站封面配置 -->
 
-<img src="http://pic.jiafly.com/logo/logo80.png" width="150px">
+<img src="images/logo/logo80.png" width="150px">
 Javaer 🇨🇳
 
 # <span style="font-weight:400; color: #E97018;">桃花岛</span> 
