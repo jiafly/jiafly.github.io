@@ -1,14 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="images/logo/logo-1-70.png"/>
-  <title>桃花岛</title>
+  <title>桃花岛 · JIAFLY 的技术笔记</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
+  <meta name="description" content="桃花岛 - 一个 Javaer 的技术笔记。Java、JVM、数据库、AI 工程，面试八股与工程实战兼顾。">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css"/>
+  <style>
+    /* 主题微调 */
+    :root { --theme-color: #E97018; }
+    .sidebar-nav > p { color: #E97018 !important; }
+    .markdown-section a { color: #E97018; }
+    .markdown-section a:hover { text-decoration: underline; }
+
+    /* 文末元信息 */
+    .page-meta {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #ddd;
+      color: #999;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .page-meta a { color: #888 !important; text-decoration: none; }
+    .page-meta a:hover { color: #E97018 !important; }
+
+    /* 页脚 */
+    .site-footer {
+      margin-top: 3rem;
+      padding: 1.2rem 0;
+      border-top: 1px solid #eee;
+      text-align: center;
+      color: #999;
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+    .site-footer a { color: #888 !important; text-decoration: none; }
+    .site-footer a:hover { color: #E97018 !important; }
+  </style>
 </head>
 <body>
   <div id="app">Loading...</div>
@@ -19,92 +54,90 @@
       coverpage: true,
       onlyCover: true,
       loadNavbar: true,
-      loadSidebar: false,
+      loadSidebar: true,
       maxLevel: 4,
       subMaxLevel: 4,
-      darkMode: {
-        light: {
-          toggleBtnBg: '#42b983'
-        }
+      auto2top: true,
+      search: {
+        placeholder: '搜索...',
+        noData: '没有结果',
+        depth: 4
       },
-      // footer
+      pagination: {
+        previousText: '上一篇',
+        nextText: '下一篇',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      copyCode: {
+        buttonText: '复制',
+        errorText: '出错',
+        successText: '已复制'
+      },
+      darkMode: {
+        light: { toggleBtnBg: '#E97018' },
+        dark: { toggleBtnBg: '#E97018' }
+      },
+      // 文章页最近修改时间（由 docsify-updated 插件读取 git）
+      formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
       plugins: [
         function (hook, vm) {
+          // 在每篇文章顶部加一个 GitHub 编辑链接，文章末尾加一个轻量元信息条
           hook.beforeEach(function (content) {
-            const en = vm.route.file.indexOf('README_EN') > -1
-            if (/githubusercontent\.com/.test(vm.route.file)) {
-              url = vm.route.file
-                .replace('raw.githubusercontent.com', 'github.com')
-                .replace(/\/master/, '/blob/master')
-            } else {
-              url = 'https://github.com/jiafly/jiafly.github.io/blob/master/' + vm.route.file
-            }
+            if (/githubusercontent\.com/.test(vm.route.file)) return content;
+            const path = vm.route.file;
+            if (!path || path === '/') return content;
+            const editUrl = 'https://github.com/jiafly/jiafly.github.io/blob/master/' + path;
+            const meta = `\n\n<div class="page-meta">\n  <span>📝 最近更新：{docsify-updated}</span>\n  <span><a href="${editUrl}" target="_blank">在 GitHub 编辑本页 →</a></span>\n</div>\n`;
+            return content + meta;
+          });
 
-            const github = `[GitHub](${url})`
-            const gitee = `[Gitee](${url.replace("github", "gitee")})`
-            
-            // const editHtml = en ? `:memo: Edit on ${github} / ${gitee}\n` : `:memo: 在 ${github} / ${gitee} 编辑\n`;
-            const editHtml = en ? `:memo: Edit on ${github}\n` : `:memo: 在 ${github} 编辑\n`;
-
-            if (vm.route.path == '/') {
-              return editHtml + content;
-            }
-            const subscription = `
-<br><hr>
-<h2 style="color: #E97018;">联系我</h2>
-
-[JIAFLY](https://github.com/jiafly) 旗下唯一公众号「**东邪之音**」​，欢迎扫码关注，**专注分享技术领域相关知识及业内最新资讯**。当然，也可以加我个人微信（备注：JIAFLY），拉你进技术交流群。
-
-关注「**东邪之音**」公众号，回复 **JIAFLY**，即可获取Java学习资料！
-
-<table>
-    <tr>
-      <td align="center" style="width: 200px;">
-        <a href="https://github.com/jiafly">
-          <sub style="color: green;">个人微信</sub>
-          <img src="images/logo/wechat.jpg" style="width: 500px;"><br>
-          <sub style="color: green;">东邪</sub>
-        </a><br>
-      </td>
-      <td align="center" style="width: 200px;">
-        <a href="https://github.com/jiafly">
-          <sub style="color: green;">公众号</sub>
-          <img src="images/logo/public_8.jpg" style="width: 500px;"><br>
-          <sub style="color: green;">东邪之音</sub>
-        </a><br>
-      </td>
-    </tr>
-</table>`
-            return editHtml + content + `\n` + subscription
-          })
-
+          // 站点统一页脚
           hook.afterEach(function (html) {
-
-            
-            const footer = [
-              '<hr/>',
-              '<footer>',
-              '<center>',
-              '<span><a href="/" title="进入首页">JIAFLY</a></span>',
-              '<span>&copy;2020&nbsp;</span>',
-              '<span><a href="https://beian.miit.gov.cn/" target="_blank" title="查看备案信息">京ICP备17013722号</a></span>',
-              '&nbsp;&nbsp;&nbsp;&nbsp;',
-              '<span>如有任何疑问请扫描上方二维码添加作者微信.</span>',
-              '</center>',
-              '</footer>'
-            ].join('');
+            const footer = `
+              <footer class="site-footer">
+                <div>
+                  <a href="/#/" title="进入首页">桃花岛</a>
+                  &nbsp;·&nbsp;
+                  <a href="/#/article/about">关于站长</a>
+                  &nbsp;·&nbsp;
+                  <a href="https://github.com/jiafly" target="_blank">GitHub</a>
+                  &nbsp;·&nbsp;
+                  公众号「东邪之音」
+                </div>
+                <div>
+                  &copy; 2020-${new Date().getFullYear()} JIAFLY
+                  &nbsp;·&nbsp;
+                  <a href="https://beian.miit.gov.cn/" target="_blank">京 ICP 备 17013722 号</a>
+                </div>
+              </footer>`;
             return html + footer;
-          })
+          });
         }
       ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <!-- 全文搜索 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- 翻页 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- 复制代码 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <!-- 图片缩放 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <!-- 最近更新时间 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-updated@1/src/time-updater.min.js"></script>
   <!-- 语法高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-properties.min.js"></script>
 </body>
 </html>
